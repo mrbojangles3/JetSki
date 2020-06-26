@@ -1,3 +1,5 @@
+---
 badfish_pod_image: "quads/badfish"
 badfish_cmd: "podman run -it --rm {{ badfish_pod_image }} -u {{ lab_ipmi_user }} -p {{ lab_ipmi_password }} -i config/idrac_interfaces.yml -H mgmt-"
+ipmitool_cmd: "ipmitool -I lanplus -H mgmt-{{ undercloud_hostname }} -U quads -P {{ chassis_password }} chassis bootdev pxe options=persistent"
 
