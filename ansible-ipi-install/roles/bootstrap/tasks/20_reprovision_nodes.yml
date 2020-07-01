@@ -1,4 +1,3 @@
-
 - name: Set lab ipmi password fact
   set_fact:
     lab_ipmi_user:  "{{ ocpinv_content.nodes[0].pm_user }}"
@@ -50,33 +49,13 @@
       shell: podman run hammercli hammer -u {{ cloud_name }} -p {{ lab_ipmi_password }}  host update --name {{ provisioner_hostname }} --build 1 --operatingsystem '{{ os_install }}' --medium '{{ os_install }}' --partition-table 'ALIAS-Partition' --overwrite 1
       when: lab_name == "alias"
 
-    - name: Check System Vendor
-      shell: cat /sys/devices/virtual/dmi/id/product_name
-      register: host_vendor
-
-    - name: Set Bios Tool
-      bios_tool: "badfish"
-      when: host_vendor.contains('PowerEdge')
-
     - name: Set provisioner host to foreman boot order
       shell: |
         {{ badfish_cmd }}{{ provisioner_hostname }} -t foreman
-      when: bios_tool  == "badfish"
 
     - name: Set provisioner host to reboot
       shell: |
         {{ badfish_cmd }}{{ provisioner_hostname }} --power-cycle
-      when: bios_tool  == "badfish"
-
-    - name: Set provisioner host to foreman boot order
-      shell: |
-        {{ ipmitool_cmd }}{{ provisioner_hostname }} -t foreman
-      when: bios_tool  == "ipmitool"
-
-    - name: Set provisioner host to reboot
-      shell: |
-        {{ ipmitool_cmd }}{{ provisioner_hostname }} --power-cycle
-      when: bios_tool  == "ipmitool"
 
     - name: wait for 420 seconds before checking for provisioner
       wait_for:
