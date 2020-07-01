@@ -1,0 +1,9 @@
+---
+plugin: foreman
+url: https://foreman.redhat.com
+user: cloud00
+password: lab@00
+validate_certs: no
+#want_facts: yes
+want_params: yes
+use_reports_api: no

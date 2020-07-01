@@ -1,0 +1,6 @@
+---
+ansible_user: root
+ansible_connection: ssh
+host_key_checking: no
+ansible_ssh_pass: 100yard-
+ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
