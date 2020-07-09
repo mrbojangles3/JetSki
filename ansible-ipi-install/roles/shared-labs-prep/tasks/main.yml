@@ -146,21 +146,41 @@
   tags:
     - clearjobs
 
-- name: Set nodes to director boot order
+    #- name: Set nodes to director boot order
+    #shell:
+      #chdir: "{{ badfish_tempdir.path }}/src/badfish"
+      #cmd: |
+        #source {{ badfish_venv }}/bin/activate
+        #{{ badfish_cmd }}{{ item }} -t director
+        #with_items:
+          #- "{{ master_fqdns }}"
+    #- "{{ worker_fqdns }}"
+    #register: boot_order
+    #until: boot_order is succeeded
+    #retries: 3
+    #delay: 60
+    #tags:
+      #- bootorder
+- name: Read Product Name
+  command: cat /sys/devices/virtual/dmi/id/product_name
+  register: product_name
+
+- debug:
+    msg: Product Name {{ product_name }}
+
+- name: Read Chassis Vendor
+  command: cat /sys/devices/virtual/dmi/id/chassis_vendor
+  register: chassis_vendor
+
+- debug:
+    msg: Chassis Vendor {{ chassis_vendor }}
+
+- name: Try IPMI tool on SuperMicro
   shell:
-    chdir: "{{ badfish_tempdir.path }}/src/badfish"
-    cmd: |
-      source {{ badfish_venv }}/bin/activate
-      {{ badfish_cmd }}{{ item }} -t director
+    cmd: "ipmitool -I lanplus -H mgmt-{{ item }} -U quads -P {{ lab_ipmi_password }} chassis bootdev pxe options=persistent"
   with_items:
     - "{{ master_fqdns }}"
     - "{{ worker_fqdns }}"
-  register: boot_order
-  until: boot_order is succeeded
-  retries: 3
-  delay: 60
-  tags:
-    - bootorder
 
 #TODO: Add wait for node reboot
 
