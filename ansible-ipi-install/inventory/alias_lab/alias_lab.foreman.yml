@@ -1,9 +1,11 @@
 ---
 plugin: foreman
-url: https://foreman.redhat.com
-user: cloud00
-password: lab@00
+url: https://navi.alias.bos.scalelab.redhat.com/
+user: cloud07
+password: bos@103
 validate_certs: no
 #want_facts: yes
 want_params: yes
 use_reports_api: no
+#group_prefix: example_
+cache: yes
