@@ -1,0 +1,48 @@
+---
+- name: Safely Poweroff Nodes
+  hosts: localhost
+  tasks:
+    - debug:
+        msg: group_foreman_available "{{ groups['foreman_available'] }}"
+
+    - name: Connectivity check of BMC
+      command: ping -c 3 "mgmt-{{ item }}"
+      loop: "{{ groups['foreman_available'] }}"
+
+    - name: IPMI power on
+      ipmi_power:
+        name: "mgmt-{{ item }}"
+        user: quads
+        #user: "{{ hostvars[groups['foreman_available']['impi_username']] }}"
+        #password: "{{ ticket_number }}"
+        # How to get the variable from a group that the current host isn't in?
+        password: bos@103
+        state: on
+      loop: "{{ groups['foreman_available'] }}"
+
+- name: Logans Playbook Name
+  hosts: foreman_available
+  tasks:
+    #- debug:
+    #msg: this is a test message mgmt-{{ inventory_hostname }}
+
+    #- debug:
+    #msg: "{{ inventory_hostname | default(logan) }}"
+
+          #- name: Ping the nodes
+          #ping:
+
+    # try to ping the bmc before you do any bmc stuff
+    # problematic is that the ipmi module is run on each host, but to power on/off 
+    # you need to have localhost do the play
+    - name: Install pip
+      yum:
+        name: python2-pip
+        state: present
+
+    - name: Pip Install pyghmi
+      pip:
+        name: pyghmi
+
+
+...
