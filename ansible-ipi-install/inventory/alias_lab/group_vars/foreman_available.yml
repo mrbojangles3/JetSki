@@ -6,4 +6,5 @@ ansible_ssh_pass: 100yard-
 #ansible_ssh_common_args: "-o StrictHostKeyChecking=no"
 impi_username: quads
 ticket_number: bos@103
+cache_timeout: 36000
 ...

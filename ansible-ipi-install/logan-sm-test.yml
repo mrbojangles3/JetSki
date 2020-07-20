@@ -10,6 +10,8 @@
       loop: "{{ groups['foreman_available'] }}"
 
     - name: IPMI power on
+      # this depends on pyghmi, I modified my local copy to fix bug:
+      # https://bugs.launchpad.net/pyghmi/+bug/1887953
       ipmi_power:
         name: "mgmt-{{ item }}"
         user: quads
