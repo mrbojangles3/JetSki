@@ -97,6 +97,22 @@ prov_ip=172.22.0.3
 # (Optional) Increase install process timeout by N iterations.
 #increase_install_timeout=2
 
+# (Optional) Disable RedFish inspection to intelligently choose between IPMI or RedFish protocol.
+# By default this feature is enabled and set to true. Uncomment below to disable and use IPMI.
+#redfish_inspection=false
+
+# (Optional) Modify files on the node filesystems, you can augment the "fake" roots for the 
+# control plane and worker nodes.
+# If defined, playbook will look for files in control plane and worker subdirectories.
+# Otherwise, it will look in {{ role_path }}/files/customize_filesystem (default)
+# For more information on modifying node filesystems visit: https://bit.ly/36tD30f
+#customize_node_filesystems="/path/to/customized/filesystems"
+
+# (Optional) Modify the path to add external manifests to the deployed nodes.
+# If defined, the playbook will copy manifests from the user provided directory.
+# Otherwise, files will be copied from the default location 'roles/installer/files/manifests/*'
+#customize_extramanifests_path="/path/to/extra/manifests
+
 ######################################
 # Vars regarding install-config.yaml #
 ######################################
@@ -135,8 +151,15 @@ dnsvip=""
 pullsecret=""
 
 # (Optional) Disable BMC Certification Validation. When using self-signed certificates for your BMC, ensure to set to True.
-# Default value is False. 
+# Default value is False.
 #disable_bmc_certificate_verification=True
+
+# (Optional) Enable RedFish VirtualMedia/iDRAC VirtualMedia
+#enable_virtualmedia=True
+
+# (Required when enable_virtualmedia is set to True) Set an available IP address from the baremetal net for these two variables
+#provisioningHostIP=<baremetal_net_IP1>
+#bootstrapProvisioningIP=<baremetal_net_IP2>
 
 # Master nodes
 # The hardware_profile is used by the baremetal operator to match the hardware discovered on the host

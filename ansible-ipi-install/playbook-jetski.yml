@@ -14,12 +14,41 @@
 
 - hosts: provisioner
   roles:
-    - { role: network-discovery }
     - { role: set-deployment-facts }
+    - { role: network-discovery }
     - { role: shared-labs-prep }
     - { role: node-prep }
     - { role: installer }
+    - { role: routable_api, when: routable_api | bool }
+  post_tasks:
+    - name: Fix default route
+      shell: |
+        ssh core@{{ item }}  -o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no  sudo ip route delete default
+        ssh core@{{ item }}  -o UserKnownHostsFile=/dev/null  -o StrictHostKeyChecking=no  sudo ip route add default via {{ extcidrnet | ipaddr('last_usable') }}
+      with_items: "{{ groups['masters'] }}"
+      when: routable_api | bool
   environment:
     http_proxy: "{{ http_proxy }}"
     https_proxy: "{{ https_proxy }}"
     no_proxy: "{{ no_proxy_list }}"
+
+- name: Finishing IPI on Baremetal Installation 
+  hosts: orchestration
+  tasks: 
+    - name: Writing Deployed node content to a file
+      copy:
+        dest: "{{ ocp_deployed_node_inv_path }}"
+        content: "{{ ocp_deploying_node_content | to_nice_json }}"
+      when: ocp_deploying_node_content.nodes | length > 0   
+
+    - name: Writing available non Deployed node content to a file
+      copy:
+        dest: "{{ ocp_nondeployed_node_inv_path }}"
+        content: "{{ nondeploying_worker_nodes_content | to_nice_json }}"
+      when: nondeploying_worker_nodes_content.nodes | length > 0
+
+    - name: Deleting non Deployed node content
+      file:
+        dest: "{{ ocp_nondeployed_node_inv_path }}"
+        state: absent
+      when: nondeploying_worker_nodes_content.nodes | length == 0 

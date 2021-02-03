@@ -5,6 +5,9 @@ Deployment Integration Team
 :email: https://github.com/openshift-kni/baremetal-deploy
 :experimental:
 :toc-title:
+:title: Deploying Installer Provisioned Infrastructure (IPI) of OpenShift on Bare Metal - {release}
+:description: Installation guide for deploying OpenShift on bare metal
+:keywords: OpenShift, baremetal, installation, ipi, Installer provisioned insfrastructure
 :imagesdir: images
 :prewrap!:
 :context: ipi-install-installation-workflow
@@ -14,6 +17,7 @@ Deployment Integration Team
 :toclevels: 5
 :sectnums:
 :sectlinks:
+:docinfo: shared
 :icons: font
 :product-title: OpenShift Container Platform
 :op-system-first: Red Hat Enterprise Linux CoreOS (RHCOS)
@@ -54,7 +58,7 @@ After an environment has been prepared according to the documented prerequisites
 ifdef::upstream[]
 // include::ipi-install-upstream-installation-workflow.adoc[leveloffset=+1]
 
-include::modules/ipi-install-upstream-installing-rhel-on-the-provision-node.adoc[leveloffset=+1]
+include::modules/ipi-install-installing-rhel-on-the-provisioner-node.adoc[leveloffset=+1]
 endif::[]
 
 // Preparing the provision node for OCP
@@ -105,10 +109,13 @@ ifdef::upstream[]
 include::modules/ipi-install-upstream-day2.adoc[leveloffset=+1]
 include::modules/ipi-install-upstream-backing-up-the-cluster-configuration.adoc[leveloffset=+2]
 include::modules/ipi-install-upstream-preparing-the-provisioner-node-to-be-deployed-as-a-worker-node.adoc[leveloffset=+2]
+include::modules/ipi-install-upstream-adding-a-worker-node-to-an-existing-cluster.adoc[leveloffset=+2]
 
 include::modules/ipi-install-upstream-dns-records-for-the-worker.adoc[leveloffset=+3]
 include::modules/ipi-install-upstream-dhcp-for-the-worker.adoc[leveloffset=+3]
 include::modules/ipi-install-upstream-deploying-the-provisioner-node-as-a-worker-node-using-metal3.adoc[leveloffset=+3]
+
+include::ipi-install-expanding-the-cluster.adoc[leveloffset=+2]
 
 endif::[]
 
