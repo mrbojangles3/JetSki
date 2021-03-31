@@ -7,6 +7,7 @@
     - master_fqdns
     - master_types
     - master_vendors
+    - worker_count
     - worker_fqdns
     - worker_types
     - worker_vendors
@@ -18,3 +19,7 @@
     - lab_ipmi_password
     - ocp_deploying_node_content
     - provisioner_type
+
+- name: Convert pullsecret to JSON
+  set_fact:
+    pullsecret: "{{ pullsecret | to_json }}"

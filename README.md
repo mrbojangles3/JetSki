@@ -305,8 +305,8 @@ version: "4.4.4"
 # Enter whether the build should use 'dev' (nightly builds) or 'ga' for Generally Available version of OpenShift
 # Empty value results in playbook failing with error message.
 build: "ga"
-# Your pull secret, https://cloud.redhat.com/openshift/install
-pullsecret: ''
+# Your pull secret as is, https://cloud.redhat.com/openshift/install
+pullsecret: 
 # This variable is used to point to the foreman server that is used to reimage nodes. This variables is useful in two cases
 # 1. When the first node in your allocation (provisioning host) is not having RHEL 8.1 OS, it is automatically rebuilt with 
 # RHEL 8.1 as the OCP installer expects the provisioning host to be RHEL 8.1. In some other cases, maybe when you have an 
@@ -331,12 +331,12 @@ worker_count: 0
 # set to true to deploy with jumbo frames
 jumbo_mtu: false
 # set to true only if you requested a public routable VLAN for your cloud in scale lab
-routable_api: fale
+routable_api: false
 ```
 
-Here's a sample all.yml for the scale lab with the pull secret and password scraped: http://pastebin.test.redhat.com/932634
+Here's a sample all.yml for the scale lab with the pull secret and password scraped: http://pastebin.test.redhat.com/945052
 
-Here's a sample all.yml for the ALIAS lab with the pull secret and password scraped: http://pastebin.test.redhat.com/932635
+Here's a sample all.yml for the ALIAS lab with the pull secret and password scraped: http://pastebin.test.redhat.com/945053 
 
 If you're a part of the [redhat-performance](https://github.com/redhat-performance) GitHub organization, you can also access the samples here: https://github.com/redhat-performance/JetSki-Configs/tree/master/jetski
 
@@ -620,7 +620,6 @@ Sample `playbook-jetski-scaleup.yml`:
         - lab_ipmi_password
         - scale_worker_node
         - worker_count
-        - current_worker_count
 
 - hosts: provisioner
   roles:
